@@ -1,0 +1,4 @@
+Homepage looks terrible. Important things to address:
+
+- Overall aesthetic (font, colors, spacing) feels far too generic. I want something striking and bold; modern, high-tech, and futuristic. Should immediately speak to early adopters of technologies.
+- Layout should mirror that of Youtube, with a search bar at the top and a grid of videos below. How those grids are clustered/organised is up for grabs; perhaps a mix of categories, trending, and featured content in the style of Spotify, Netflix, or TikTok (though our content will be long-form only - we want to shy away from brainrot content like TikTok or IG Reels or Youtube shorts).
