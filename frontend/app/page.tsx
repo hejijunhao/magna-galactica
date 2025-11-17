@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Sparkles, Compass, TrendingUp, User, LogIn } from "lucide-react";
 
 // Mock video data
 const mockVideos = [
@@ -81,7 +82,7 @@ function VideoCard({ video }: { video: typeof mockVideos[0] }) {
   return (
     <div className="group cursor-pointer">
       {/* Thumbnail */}
-      <div className="relative aspect-video bg-white/5 mb-3 rounded-lg overflow-hidden border border-white/10 group-hover:border-blue-400/40 transition-all duration-300">
+      <div className="relative aspect-video bg-white/5 mb-2 rounded-md overflow-hidden border border-white/10 group-hover:border-blue-400/40 transition-all duration-300">
         <img
           src={video.thumbnail}
           alt={video.title}
@@ -89,7 +90,7 @@ function VideoCard({ video }: { video: typeof mockVideos[0] }) {
         />
 
         {/* Duration badge */}
-        <div className="absolute bottom-2 right-2 px-2 py-0.5 bg-black/90 text-white text-xs font-mono rounded backdrop-blur-sm">
+        <div className="absolute bottom-1.5 right-1.5 px-1.5 py-0.5 bg-black/90 text-white text-[10px] font-mono rounded backdrop-blur-sm">
           {video.duration}
         </div>
 
@@ -99,13 +100,13 @@ function VideoCard({ video }: { video: typeof mockVideos[0] }) {
 
       {/* Video Info */}
       <div>
-        <h3 className="font-bold text-sm text-white mb-1.5 leading-tight group-hover:text-blue-300 transition-colors line-clamp-2">
+        <h3 className="font-semibold text-xs text-white mb-1 leading-tight group-hover:text-blue-300 transition-colors line-clamp-2">
           {video.title}
         </h3>
-        <p className="text-xs text-blue-200/50 mb-1 font-mono">
+        <p className="text-[10px] text-blue-200/50 mb-0.5 font-mono">
           {video.channel}
         </p>
-        <div className="flex items-center gap-1.5 text-xs text-blue-300/40 font-mono">
+        <div className="flex items-center gap-1 text-[10px] text-blue-300/40 font-mono">
           <span>{video.views} views</span>
           <span>·</span>
           <span>{video.timestamp}</span>
@@ -141,6 +142,7 @@ function CategoryPill({
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState("All");
+  const [activeNav, setActiveNav] = useState("For You");
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#020307] via-[#050810] to-[#0a0f1a] relative overflow-hidden">
@@ -165,20 +167,20 @@ export default function Home() {
       <div className="relative z-10">
       {/* Header */}
       <header className="sticky top-0 z-50 bg-[#020307]/90 backdrop-blur-xl border-b border-white/10">
-        <div className="max-w-5xl mx-auto px-6 py-8">
-          <div className="flex flex-col items-center gap-6">
-            {/* Logo - Text Only */}
-            <div className="text-center leading-none">
-              <div className="text-5xl font-normal text-white tracking-[0.25em] mb-2 [font-family:var(--font-michroma)]">
-                MAGNA GALACTICA
-              </div>
-              <div className="text-xs text-blue-300/50 font-mono tracking-[0.4em] uppercase">
-                Knowledge Protocol
-              </div>
+        <div className="flex items-center py-6">
+          {/* Logo - Aligned with Sidebar */}
+          <div className="w-64 shrink-0 px-6 leading-none">
+            <div className="text-2xl font-normal text-white tracking-[0.15em] [font-family:var(--font-michroma)]">
+              MAGNA GALACTICA
             </div>
+            <div className="text-[10px] text-blue-300/50 font-mono tracking-[0.3em] uppercase mt-1">
+              Knowledge Protocol
+            </div>
+          </div>
 
-            {/* Search Bar - Centered and Simplified */}
-            <div className="w-full max-w-2xl">
+          {/* Search Bar - Centered and Wide */}
+          <div className="flex-1 px-6">
+            <div className="max-w-3xl mx-auto">
               <div className="flex items-center border border-white/20 rounded-lg overflow-hidden bg-white/5 backdrop-blur-sm focus-within:border-blue-400/50 focus-within:ring-1 focus-within:ring-blue-400/30 focus-within:bg-white/10 transition-all">
                 <span className="pl-4 pr-2 text-blue-300/50 font-mono text-sm">
                   &gt;
@@ -196,34 +198,67 @@ export default function Home() {
         </div>
       </header>
 
-      {/* Category Pills */}
-      <div className="border-b border-white/10 bg-[#020307]/80 backdrop-blur-md">
-        <div className="max-w-[1800px] mx-auto px-6 py-4">
-          <div className="flex gap-2 overflow-x-auto scrollbar-hide justify-center">
-            {categories.map((category) => (
-              <CategoryPill
-                key={category}
-                label={category}
-                active={activeCategory === category}
-                onClick={() => setActiveCategory(category)}
-              />
-            ))}
-          </div>
-        </div>
-      </div>
+      {/* Main Layout with Sidebar */}
+      <div className="flex">
+        {/* Left Sidebar */}
+        <aside className="w-64 shrink-0 sticky top-[73px] h-[calc(100vh-73px)] border-r border-white/10 bg-[#020307]/50 backdrop-blur-sm">
+          <nav className="p-4 space-y-1">
+            {[
+              { name: "For You", icon: Sparkles },
+              { name: "Explore", icon: Compass },
+              { name: "Trending", icon: TrendingUp },
+              { name: "Profile", icon: User },
+              { name: "Login", icon: LogIn },
+            ].map((item) => {
+              const IconComponent = item.icon;
+              return (
+                <button
+                  key={item.name}
+                  onClick={() => setActiveNav(item.name)}
+                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg font-mono text-sm transition-all duration-200 ${
+                    activeNav === item.name
+                      ? "bg-gradient-to-r from-blue-500/20 to-purple-600/20 text-white border border-blue-400/30 shadow-lg shadow-blue-500/10"
+                      : "text-blue-200/60 hover:text-white hover:bg-white/5"
+                  }`}
+                >
+                  <IconComponent className="w-4 h-4 text-blue-400" />
+                  <span>{item.name}</span>
+                </button>
+              );
+            })}
+          </nav>
+        </aside>
 
-      {/* Main Content */}
-      <main className="max-w-[1800px] mx-auto px-6 py-8">
+        {/* Right Content Area */}
+        <div className="flex-1">
+          {/* Category Pills */}
+          <div className="border-b border-white/10 bg-[#020307]/80 backdrop-blur-md sticky top-[73px] z-40">
+            <div className="px-6 py-4">
+              <div className="flex gap-2 overflow-x-auto scrollbar-hide">
+                {categories.map((category) => (
+                  <CategoryPill
+                    key={category}
+                    label={category}
+                    active={activeCategory === category}
+                    onClick={() => setActiveCategory(category)}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Main Content */}
+          <main className="px-4 py-6">
         {/* Trending Section */}
-        <section className="mb-12">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-1 h-6 bg-gradient-to-b from-blue-400 to-purple-500 rounded-full shadow-lg shadow-blue-400/50" />
-            <h2 className="text-xl font-bold text-white font-mono">
+        <section className="mb-8">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-1 h-5 bg-gradient-to-b from-blue-400 to-purple-500 rounded-full shadow-lg shadow-blue-400/50" />
+            <h2 className="text-lg font-bold text-white font-mono">
               Trending Now
             </h2>
             <div className="flex-1 h-px bg-white/10" />
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 2xl:grid-cols-8 gap-3">
             {mockVideos.slice(0, 4).map((video) => (
               <VideoCard key={video.id} video={video} />
             ))}
@@ -231,15 +266,15 @@ export default function Home() {
         </section>
 
         {/* Featured Content */}
-        <section className="mb-12">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-1 h-6 bg-gradient-to-b from-purple-400 to-pink-500 rounded-full shadow-lg shadow-purple-400/50" />
-            <h2 className="text-xl font-bold text-white font-mono">
+        <section className="mb-8">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-1 h-5 bg-gradient-to-b from-purple-400 to-pink-500 rounded-full shadow-lg shadow-purple-400/50" />
+            <h2 className="text-lg font-bold text-white font-mono">
               Featured
             </h2>
             <div className="flex-1 h-px bg-white/10" />
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 2xl:grid-cols-8 gap-3">
             {mockVideos.map((video) => (
               <VideoCard key={video.id} video={video} />
             ))}
@@ -247,19 +282,19 @@ export default function Home() {
         </section>
 
         {/* Technology Category */}
-        <section className="mb-12">
-          <div className="flex items-center justify-between mb-6">
+        <section className="mb-8">
+          <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
-              <div className="w-1 h-6 bg-gradient-to-b from-cyan-400 to-blue-500 rounded-full shadow-lg shadow-cyan-400/50" />
-              <h2 className="text-xl font-bold text-white font-mono">
+              <div className="w-1 h-5 bg-gradient-to-b from-cyan-400 to-blue-500 rounded-full shadow-lg shadow-cyan-400/50" />
+              <h2 className="text-lg font-bold text-white font-mono">
                 Technology
               </h2>
             </div>
-            <button className="text-sm text-blue-300 hover:text-white font-mono font-medium transition-colors">
+            <button className="text-xs text-blue-300 hover:text-white font-mono font-medium transition-colors">
               View all →
             </button>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 2xl:grid-cols-8 gap-3">
             {mockVideos
               .filter((v) => v.category === "Technology")
               .map((video) => (
@@ -269,19 +304,19 @@ export default function Home() {
         </section>
 
         {/* Science Category */}
-        <section className="mb-12">
-          <div className="flex items-center justify-between mb-6">
+        <section className="mb-8">
+          <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
-              <div className="w-1 h-6 bg-gradient-to-b from-green-400 to-emerald-500 rounded-full shadow-lg shadow-green-400/50" />
-              <h2 className="text-xl font-bold text-white font-mono">
+              <div className="w-1 h-5 bg-gradient-to-b from-green-400 to-emerald-500 rounded-full shadow-lg shadow-green-400/50" />
+              <h2 className="text-lg font-bold text-white font-mono">
                 Science
               </h2>
             </div>
-            <button className="text-sm text-blue-300 hover:text-white font-mono font-medium transition-colors">
+            <button className="text-xs text-blue-300 hover:text-white font-mono font-medium transition-colors">
               View all →
             </button>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 2xl:grid-cols-8 gap-3">
             {mockVideos
               .filter((v) => v.category === "Science")
               .map((video) => (
@@ -334,7 +369,9 @@ export default function Home() {
             © 2025 Magna Galactica · Knowledge Without Limits
           </div>
         </footer>
-      </main>
+          </main>
+        </div>
+      </div>
       </div>
     </div>
   );
