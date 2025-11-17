@@ -81,7 +81,7 @@ function VideoCard({ video }: { video: typeof mockVideos[0] }) {
   return (
     <div className="group cursor-pointer">
       {/* Thumbnail */}
-      <div className="relative aspect-video bg-[var(--surface)] mb-3 rounded-lg overflow-hidden border border-[var(--border)]">
+      <div className="relative aspect-video bg-white/5 mb-3 rounded-lg overflow-hidden border border-white/10 group-hover:border-blue-400/40 transition-all duration-300">
         <img
           src={video.thumbnail}
           alt={video.title}
@@ -89,23 +89,23 @@ function VideoCard({ video }: { video: typeof mockVideos[0] }) {
         />
 
         {/* Duration badge */}
-        <div className="absolute bottom-2 right-2 px-2 py-0.5 bg-black/90 text-white text-xs font-mono rounded">
+        <div className="absolute bottom-2 right-2 px-2 py-0.5 bg-black/90 text-white text-xs font-mono rounded backdrop-blur-sm">
           {video.duration}
         </div>
 
         {/* Hover overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        <div className="absolute inset-0 bg-gradient-to-t from-blue-900/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       </div>
 
       {/* Video Info */}
       <div>
-        <h3 className="font-bold text-sm text-[var(--foreground)] mb-1.5 leading-tight group-hover:text-[var(--primary)] transition-colors line-clamp-2">
+        <h3 className="font-bold text-sm text-white mb-1.5 leading-tight group-hover:text-blue-300 transition-colors line-clamp-2">
           {video.title}
         </h3>
-        <p className="text-xs text-[var(--foreground-muted)] mb-1 font-mono">
+        <p className="text-xs text-blue-200/50 mb-1 font-mono">
           {video.channel}
         </p>
-        <div className="flex items-center gap-1.5 text-xs text-[var(--foreground-dim)] font-mono">
+        <div className="flex items-center gap-1.5 text-xs text-blue-300/40 font-mono">
           <span>{video.views} views</span>
           <span>·</span>
           <span>{video.timestamp}</span>
@@ -129,8 +129,8 @@ function CategoryPill({
       onClick={onClick}
       className={`px-4 py-2 font-medium text-sm whitespace-nowrap transition-all duration-200 rounded-md border font-mono ${
         active
-          ? "bg-[var(--primary)] text-white border-[var(--primary)]"
-          : "bg-white text-[var(--foreground-muted)] border-[var(--border)] hover:border-[var(--border-strong)] hover:text-[var(--foreground)]"
+          ? "bg-gradient-to-r from-blue-500 to-purple-600 text-white border-blue-400/50 shadow-lg shadow-blue-500/30"
+          : "bg-white/5 text-blue-200/70 border-white/20 hover:border-blue-400/40 hover:text-white hover:bg-white/10"
       }`}
     >
       {label}
@@ -143,76 +143,63 @@ export default function Home() {
   const [activeCategory, setActiveCategory] = useState("All");
 
   return (
-    <div className="min-h-screen bg-[var(--background)]">
+    <div className="min-h-screen bg-gradient-to-b from-[#020307] via-[#050810] to-[#0a0f1a] relative overflow-hidden">
+      {/* Starfield Effect */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {[...Array(50)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute w-[2px] h-[2px] bg-white rounded-full animate-twinkle"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              opacity: Math.random() * 0.7 + 0.3,
+              animationDelay: `${Math.random() * 3}s`,
+              animationDuration: `${Math.random() * 2 + 2}s`,
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Main Content */}
+      <div className="relative z-10">
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-[var(--border)]">
-        <div className="max-w-[1800px] mx-auto px-6 py-4">
-          <div className="flex items-center gap-8">
-            {/* Logo */}
-            <div className="flex items-center gap-3 flex-shrink-0">
-              <div className="w-10 h-10 bg-[var(--primary)] rounded-md flex items-center justify-center">
-                <span className="text-white font-bold text-xl font-mono">M</span>
+      <header className="sticky top-0 z-50 bg-[#020307]/90 backdrop-blur-xl border-b border-white/10">
+        <div className="max-w-5xl mx-auto px-6 py-8">
+          <div className="flex flex-col items-center gap-6">
+            {/* Logo - Text Only */}
+            <div className="text-center leading-none">
+              <div className="text-5xl font-normal text-white tracking-[0.25em] mb-2 [font-family:var(--font-michroma)]">
+                MAGNA GALACTICA
               </div>
-              <div className="leading-none">
-                <div className="text-lg font-bold text-[var(--foreground)] font-mono tracking-tight">
-                  MAGNA GALACTICA
-                </div>
-                <div className="text-[10px] text-[var(--foreground-dim)] font-mono tracking-wide">
-                  Knowledge Protocol
-                </div>
+              <div className="text-xs text-blue-300/50 font-mono tracking-[0.4em] uppercase">
+                Knowledge Protocol
               </div>
             </div>
 
-            {/* Search Bar */}
-            <div className="flex-1 max-w-2xl">
-              <div className="relative">
-                <div className="flex items-center border border-[var(--border)] rounded-lg overflow-hidden bg-white focus-within:border-[var(--primary)] focus-within:ring-1 focus-within:ring-[var(--primary)] transition-all">
-                  <span className="pl-4 pr-2 text-[var(--foreground-dim)] font-mono text-sm">
-                    &gt;
-                  </span>
-                  <input
-                    type="text"
-                    placeholder="Search videos, topics, ideas..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="flex-1 py-2.5 bg-transparent text-[var(--foreground)] placeholder-[var(--foreground-dim)] focus:outline-none font-mono text-sm"
-                  />
-                  <button className="px-6 py-2.5 bg-[var(--primary)] text-white font-semibold text-sm font-mono hover:bg-[var(--primary-hover)] transition-colors">
-                    Search
-                  </button>
-                </div>
+            {/* Search Bar - Centered and Simplified */}
+            <div className="w-full max-w-2xl">
+              <div className="flex items-center border border-white/20 rounded-lg overflow-hidden bg-white/5 backdrop-blur-sm focus-within:border-blue-400/50 focus-within:ring-1 focus-within:ring-blue-400/30 focus-within:bg-white/10 transition-all">
+                <span className="pl-4 pr-2 text-blue-300/50 font-mono text-sm">
+                  &gt;
+                </span>
+                <input
+                  type="text"
+                  placeholder="Search videos, topics, ideas..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="flex-1 py-3 bg-transparent text-white placeholder-blue-200/40 focus:outline-none font-mono text-sm"
+                />
               </div>
-            </div>
-
-            {/* User Actions */}
-            <div className="flex items-center gap-3">
-              <button className="p-2 rounded-md border border-[var(--border)] hover:border-[var(--border-strong)] hover:bg-[var(--surface)] transition-all">
-                <svg
-                  className="w-5 h-5 text-[var(--foreground-muted)]"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
-                  />
-                </svg>
-              </button>
-              <button className="px-4 py-2 bg-[var(--primary)] text-white font-semibold text-sm font-mono rounded-md hover:bg-[var(--primary-hover)] transition-colors">
-                Sign In
-              </button>
             </div>
           </div>
         </div>
       </header>
 
       {/* Category Pills */}
-      <div className="sticky top-[73px] z-40 bg-white/95 backdrop-blur-md border-b border-[var(--border)]">
-        <div className="max-w-[1800px] mx-auto px-6 py-3">
-          <div className="flex gap-2 overflow-x-auto scrollbar-hide">
+      <div className="border-b border-white/10 bg-[#020307]/80 backdrop-blur-md">
+        <div className="max-w-[1800px] mx-auto px-6 py-4">
+          <div className="flex gap-2 overflow-x-auto scrollbar-hide justify-center">
             {categories.map((category) => (
               <CategoryPill
                 key={category}
@@ -230,11 +217,11 @@ export default function Home() {
         {/* Trending Section */}
         <section className="mb-12">
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-1 h-6 bg-[var(--primary)] rounded-full" />
-            <h2 className="text-xl font-bold text-[var(--foreground)] font-mono">
+            <div className="w-1 h-6 bg-gradient-to-b from-blue-400 to-purple-500 rounded-full shadow-lg shadow-blue-400/50" />
+            <h2 className="text-xl font-bold text-white font-mono">
               Trending Now
             </h2>
-            <div className="flex-1 h-px bg-[var(--border)]" />
+            <div className="flex-1 h-px bg-white/10" />
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {mockVideos.slice(0, 4).map((video) => (
@@ -246,11 +233,11 @@ export default function Home() {
         {/* Featured Content */}
         <section className="mb-12">
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-1 h-6 bg-[var(--secondary)] rounded-full" />
-            <h2 className="text-xl font-bold text-[var(--foreground)] font-mono">
+            <div className="w-1 h-6 bg-gradient-to-b from-purple-400 to-pink-500 rounded-full shadow-lg shadow-purple-400/50" />
+            <h2 className="text-xl font-bold text-white font-mono">
               Featured
             </h2>
-            <div className="flex-1 h-px bg-[var(--border)]" />
+            <div className="flex-1 h-px bg-white/10" />
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {mockVideos.map((video) => (
@@ -263,12 +250,12 @@ export default function Home() {
         <section className="mb-12">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
-              <div className="w-1 h-6 bg-[var(--accent)] rounded-full" />
-              <h2 className="text-xl font-bold text-[var(--foreground)] font-mono">
+              <div className="w-1 h-6 bg-gradient-to-b from-cyan-400 to-blue-500 rounded-full shadow-lg shadow-cyan-400/50" />
+              <h2 className="text-xl font-bold text-white font-mono">
                 Technology
               </h2>
             </div>
-            <button className="text-sm text-[var(--primary)] hover:text-[var(--primary-hover)] font-mono font-medium transition-colors">
+            <button className="text-sm text-blue-300 hover:text-white font-mono font-medium transition-colors">
               View all →
             </button>
           </div>
@@ -285,12 +272,12 @@ export default function Home() {
         <section className="mb-12">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
-              <div className="w-1 h-6 bg-[var(--primary)] rounded-full" />
-              <h2 className="text-xl font-bold text-[var(--foreground)] font-mono">
+              <div className="w-1 h-6 bg-gradient-to-b from-green-400 to-emerald-500 rounded-full shadow-lg shadow-green-400/50" />
+              <h2 className="text-xl font-bold text-white font-mono">
                 Science
               </h2>
             </div>
-            <button className="text-sm text-[var(--primary)] hover:text-[var(--primary-hover)] font-mono font-medium transition-colors">
+            <button className="text-sm text-blue-300 hover:text-white font-mono font-medium transition-colors">
               View all →
             </button>
           </div>
@@ -304,50 +291,51 @@ export default function Home() {
         </section>
 
         {/* Footer */}
-        <footer className="mt-16 pt-8 border-t border-[var(--border)]">
+        <footer className="mt-16 pt-8 border-t border-white/10">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-xs font-mono">
             <div>
-              <div className="text-[var(--foreground)] font-bold mb-3">System Status</div>
-              <div className="text-[var(--foreground-dim)] space-y-1.5">
+              <div className="text-white font-bold mb-3">System Status</div>
+              <div className="text-blue-200/40 space-y-1.5">
                 <div>Network: Online</div>
                 <div>Latency: 12ms</div>
                 <div>Nodes: 9,847</div>
               </div>
             </div>
             <div>
-              <div className="text-[var(--foreground)] font-bold mb-3">Protocol</div>
-              <div className="text-[var(--foreground-dim)] space-y-1.5">
+              <div className="text-white font-bold mb-3">Protocol</div>
+              <div className="text-blue-200/40 space-y-1.5">
                 <div>Version: v1.0.0</div>
                 <div>Build: Stable</div>
                 <div>License: Open</div>
               </div>
             </div>
             <div>
-              <div className="text-[var(--foreground)] font-bold mb-3">Links</div>
-              <div className="text-[var(--foreground-dim)] space-y-1.5">
+              <div className="text-white font-bold mb-3">Links</div>
+              <div className="text-blue-200/40 space-y-1.5">
                 <div>
-                  <a href="#" className="hover:text-[var(--primary)] transition-colors">
+                  <a href="#" className="hover:text-blue-300 transition-colors">
                     Documentation
                   </a>
                 </div>
                 <div>
-                  <a href="#" className="hover:text-[var(--primary)] transition-colors">
+                  <a href="#" className="hover:text-blue-300 transition-colors">
                     API Access
                   </a>
                 </div>
                 <div>
-                  <a href="#" className="hover:text-[var(--primary)] transition-colors">
+                  <a href="#" className="hover:text-blue-300 transition-colors">
                     GitHub
                   </a>
                 </div>
               </div>
             </div>
           </div>
-          <div className="mt-8 pt-4 border-t border-[var(--border)] text-center text-[var(--foreground-dim)] text-xs font-mono">
+          <div className="mt-8 pt-4 border-t border-white/10 text-center text-blue-200/40 text-xs font-mono">
             © 2025 Magna Galactica · Knowledge Without Limits
           </div>
         </footer>
       </main>
+      </div>
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Space_Mono, JetBrains_Mono } from "next/font/google";
+import { Space_Mono, JetBrains_Mono, Michroma } from "next/font/google";
 import "./globals.css";
 
 const spaceMono = Space_Mono({
@@ -10,6 +10,12 @@ const spaceMono = Space_Mono({
 
 const jetbrainsMono = JetBrains_Mono({
   variable: "--font-jetbrains-mono",
+  subsets: ["latin"],
+});
+
+const michroma = Michroma({
+  weight: ["400"],
+  variable: "--font-michroma",
   subsets: ["latin"],
 });
 
@@ -26,7 +32,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${spaceMono.variable} ${jetbrainsMono.variable} antialiased`}
+        className={`${spaceMono.variable} ${jetbrainsMono.variable} ${michroma.variable} antialiased`}
       >
         {children}
       </body>
